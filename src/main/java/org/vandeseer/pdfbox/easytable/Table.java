@@ -51,7 +51,7 @@ public class Table {
     float getAvailableCellWidthRespectingSpan(int columnIndex, int span) {
         float cellWidth = 0;
         for (int i = 0; i < span; i++) {
-            cellWidth += getColumns().get(columnIndex + i).getWidth();
+            cellWidth += getColumns().get(columnIndex + i).getWidth(); // TODO should we expand?
         }
         return cellWidth;
     }
