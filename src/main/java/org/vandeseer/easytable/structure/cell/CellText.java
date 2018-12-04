@@ -49,8 +49,9 @@ public class CellText extends CellBaseData {
 
         if (Optional.ofNullable(settings.getWordBreak()).orElse(false)) {
 
-            final int size = PdfUtil.getOptimalTextBreakLines(text, getFont(), getFontSize(),
-                    getWidthOfTextAndHorizontalPadding() - getHorizontalPadding()).size();
+            final float maxWidth = getMaxWidth();
+
+            final int size = PdfUtil.getOptimalTextBreakLines(text, getFont(), getFontSize(), maxWidth).size();
 
             final float heightOfTextLines = size * fontHeight;
             final float heightOfLineSpacing = (size - 1) * fontHeight * getLineSpacing();
@@ -71,18 +72,7 @@ public class CellText extends CellBaseData {
 
         if (Optional.ofNullable(settings.getWordBreak()).orElse(false)) {
 
-            float columnsWidth = getColumn().getWidth();
-
-            // We have to take column spanning into account
-            if (getSpan() > 1) {
-                Column currentColumn = getColumn();
-                for (int i = 1; i < getSpan(); i++) {
-                    columnsWidth += currentColumn.getNext().getWidth();
-                    currentColumn = currentColumn.getNext();
-                }
-            }
-
-            final float maxWidth = columnsWidth - getHorizontalPadding();
+            final float maxWidth = getMaxWidth();
             List<String> textLines = PdfUtil.getOptimalTextBreakLines(text, getFont(), getFontSize(), maxWidth);
             final float maximalTextWidth = textLines
                     .stream()
@@ -97,6 +87,21 @@ public class CellText extends CellBaseData {
         }
 
         return textWidth + getHorizontalPadding();
+    }
+
+    private float getMaxWidth() {
+        float columnsWidth = getColumn().getWidth();
+
+        // We have to take column spanning into account
+        if (getSpan() > 1) {
+            Column currentColumn = getColumn();
+            for (int i = 1; i < getSpan(); i++) {
+                columnsWidth += currentColumn.getNext().getWidth();
+                currentColumn = currentColumn.getNext();
+            }
+        }
+
+        return columnsWidth - getHorizontalPadding();
     }
 
     public abstract static class CellTextBuilder<C extends CellText, B extends CellText.CellTextBuilder<C, B>> extends CellBaseDataBuilder<C, B> {
