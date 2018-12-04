@@ -243,7 +243,7 @@ public class TableDrawer {
                 - (size.x / 2f);
 
         drawAt.y = moveY
-                + ((cell.getHeight() - cell.getPaddingTop() - cell.getPaddingBottom()) / 2f) // middle of cell
+                + ((cell.getRow().getHeight() - cell.getPaddingTop() - cell.getPaddingBottom()) / 2f) // middle of cell
                 + cell.getPaddingBottom()
                 - (size.y / 2f);
 
