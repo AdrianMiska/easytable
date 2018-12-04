@@ -89,7 +89,7 @@ public class CellText extends CellBaseData {
         return textWidth + getHorizontalPadding();
     }
 
-    private float getMaxWidth() {
+    public float getMaxWidth() {
         float columnsWidth = getColumn().getWidth();
 
         // We have to take column spanning into account
